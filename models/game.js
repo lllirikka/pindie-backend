@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// Не забываем импортировать модель, на которую ссылаемся
 const userModel = require("./user");
 const categoryModel = require("./category");
 
@@ -24,14 +23,13 @@ const gameSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // Добавляем поле для списка пользователей
+
   users: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: userModel,
     },
   ],
-  // Добавляем поле для списка категорий
   categories: [
     {
       type: mongoose.Schema.Types.ObjectId,

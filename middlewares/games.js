@@ -1,18 +1,20 @@
-// Файл middlewares/games.js
-
-// Импортируем модель
 const games = require("../models/game");
 
 const findAllGames = async (req, res, next) => {
-  // По GET-запросу на эндпоинт /games найдём все документы категорий
-  // и с помощью метода populate запросим данные о связанных
-  // категориях и пользователях
   req.gamesArray = await games
     .find({})
     .populate("categories")
-    .populate("users");
+    .populate({ path: "users", select: "-password" });
   next();
 };
 
-// Экспортируем функцию поиска всех игр
-module.exports = findAllGames;
+const createGame = async (req, res, next) => {
+  try {
+    req.game = await games.create(req.body);
+    next();
+  } catch (error) {
+    res.status(400).send({ message: "Error creating game" });
+  }
+};
+
+module.exports = { findAllGames, createGame };
